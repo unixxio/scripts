@@ -203,12 +203,11 @@ function create_credentials {
                 ;;
         esac
 
-        echo -e "\nYou have created the following :\n"
-        echo -e "Database : ${DBNAME}"
+        echo -e "\nDatabase : ${DBNAME}"
         echo -e "Username : ${USERNAME}"
         echo -e "Password : ${PASSWORD}"
 
-        PS="Is this correct? [Y/n] "
+        PS="Do you want to continue? [Y/n] "
         PS3="$(echo -e "\n${PS}")"
         read -r -p "${PS3} " RESPONSE
         case "${RESPONSE}" in
