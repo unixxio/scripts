@@ -11,7 +11,7 @@
 #########################################################
 
 function verify_permissions {
-    if [[ $EUID -ne 0 ]]; then
+    if [[ ${EUID} -ne 0 ]]; then
        echo -e "\nThis script must be run as root.\n"
        exit 1
     fi
@@ -20,7 +20,7 @@ function verify_permissions {
 function install_packages {
     PACKAGES="openssl"
 
-    echo -e "\nInstalling required packages for this script. Please wait ..."
+    echo -e "\nInstalling required packages for this script. Please wait..."
     echo -e "Packages : ${PACKAGES}"
     #echo -e "\nInstalling required packages (${PACKAGES}) for this script. Please wait..."
     apt-get update > /dev/null 2>&1 && apt-get upgrade -y > /dev/null 2>&1
@@ -58,7 +58,7 @@ function create_credentials {
 
         RESULT="$(mysql -se "SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '${USERNAME}')")"
         if [ "${RESULT}" == 1 ]; then
-            PS="[ Warning ] The user ${USERNAME} already exists. Do you want to create a new database for this user? (Y/n):"
+            PS="[ Warning ] The user ${USERNAME} already exists. Do you want to create a new database for this user? (Y/n) : "
             PS3="$(echo -e "\n${PS}")"
             read -r -p "${PS3} " RESPONSE
             case "${RESPONSE}" in
@@ -66,7 +66,7 @@ function create_credentials {
                     create_database_name_existing_user
                     ;;
                 [nN][oO]|[Nn])
-                    PS="Do you want to grant ${USERNAME} permissions to an existing database? (Y/n):"
+                    PS="Do you want to grant ${USERNAME} permissions to an existing database? (Y/n) : "
                     PS3="$(echo -e "\n${PS}")"
                     read -r -p "${PS3} " RESPONSE
                     case "${RESPONSE}" in
@@ -95,8 +95,8 @@ function create_credentials {
     function select_existing_database {
         LIST_DATABASES="$(mysql --skip-column-names -e "SHOW DATABASES;" | grep -vw "information_schema" | grep -vw "performance_schema" | grep -vw "mysql")"
 
-        echo -e "\nList of all databases:\n"
-        PS="Select a database (number): "
+        echo -e "\nList of all databases :\n"
+        PS="Select a database (number) : "
         PS3="$(echo -e "\n${PS}")"
         OPTIONS=(${LIST_DATABASES})
         select DBNAME in "${OPTIONS[@]}";
@@ -104,7 +104,7 @@ function create_credentials {
 
             echo -e "\nYou have selected database : ${DBNAME}"
 
-            PS="Is this correct? (y/N):"
+            PS="Is this correct? (y/N) : "
             PS3="$(echo -e "\n${PS}")"
             read -r -p "${PS3} " RESPONSE
             case "${RESPONSE}" in
@@ -160,7 +160,7 @@ function create_credentials {
 
             echo -e "\nYou have entered : ${DBNAME}"
 
-            PS="Is this correct? (Y/n):"
+            PS="Is this correct? (Y/n) : "
             PS3="$(echo -e "\n${PS}")"
             read -r -p "${PS3} " RESPONSE
             case "${RESPONSE}" in
@@ -181,7 +181,7 @@ function create_credentials {
     }
 
     function create_database_password {
-        PS="Do you want to generate a random password for user ${USERNAME}? (Y/n):"
+        PS="Do you want to generate a random password for user ${USERNAME}? (Y/n) : "
         PS3="$(echo -e "\n${PS}")"
         read -r -p "${PS3} " RESPONSE
         case "${RESPONSE}" in
@@ -208,7 +208,7 @@ function create_credentials {
         echo -e "Username : ${USERNAME}"
         echo -e "Password : ${PASSWORD}"
 
-        PS="Is this correct? (Y/n):"
+        PS="Is this correct? (Y/n) : "
         PS3="$(echo -e "\n${PS}")"
         read -r -p "${PS3} " RESPONSE
         case "${RESPONSE}" in
