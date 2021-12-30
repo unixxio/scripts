@@ -58,7 +58,7 @@ function create_credentials {
 
         RESULT="$(mysql -se "SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '${USERNAME}')")"
         if [ "${RESULT}" == 1 ]; then
-            PS="[ Warning ] The user ${USERNAME} already exists. Do you want to create a new database for this user? (Y/n) : "
+            PS="[ Warning ] The user ${USERNAME} already exists. Do you want to create a new database for this user? [Y/n] "
             PS3="$(echo -e "\n${PS}")"
             read -r -p "${PS3} " RESPONSE
             case "${RESPONSE}" in
@@ -66,7 +66,7 @@ function create_credentials {
                     create_database_name_existing_user
                     ;;
                 [nN][oO]|[Nn])
-                    PS="Do you want to grant ${USERNAME} permissions to an existing database? (Y/n) : "
+                    PS="Do you want to grant ${USERNAME} permissions to an existing database? [Y/n] "
                     PS3="$(echo -e "\n${PS}")"
                     read -r -p "${PS3} " RESPONSE
                     case "${RESPONSE}" in
@@ -104,7 +104,7 @@ function create_credentials {
 
             echo -e "\nYou have selected database : ${DBNAME}"
 
-            PS="Is this correct? (y/N) : "
+            PS="Is this correct? [y/N] "
             PS3="$(echo -e "\n${PS}")"
             read -r -p "${PS3} " RESPONSE
             case "${RESPONSE}" in
@@ -160,7 +160,7 @@ function create_credentials {
 
             echo -e "\nYou have entered : ${DBNAME}"
 
-            PS="Is this correct? (Y/n) : "
+            PS="Is this correct? [Y/n] "
             PS3="$(echo -e "\n${PS}")"
             read -r -p "${PS3} " RESPONSE
             case "${RESPONSE}" in
@@ -181,7 +181,7 @@ function create_credentials {
     }
 
     function create_database_password {
-        PS="Do you want to generate a random password for user ${USERNAME}? (Y/n) : "
+        PS="Do you want to generate a random password for user ${USERNAME}? [Y/n] "
         PS3="$(echo -e "\n${PS}")"
         read -r -p "${PS3} " RESPONSE
         case "${RESPONSE}" in
@@ -208,7 +208,7 @@ function create_credentials {
         echo -e "Username : ${USERNAME}"
         echo -e "Password : ${PASSWORD}"
 
-        PS="Is this correct? (Y/n) : "
+        PS="Is this correct? [Y/n] "
         PS3="$(echo -e "\n${PS}")"
         read -r -p "${PS3} " RESPONSE
         case "${RESPONSE}" in
